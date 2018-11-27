@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import BaseFormSet
 from django.forms import formset_factory
+from .models import Receipt
 
 class BaseReceiptFormSet(BaseFormSet):
     def clean(self):
@@ -17,9 +18,10 @@ class BaseReceiptFormSet(BaseFormSet):
             raise forms.ValidationError("Total cost can not exceed 100")
 
 
-class ReceiptForm(forms.Form):
-    item = forms.CharField()
-    cost = forms.DecimalField()
+class ReceiptForm(forms.ModelForm):
+    class Meta:
+        model = Receipt
+        fields = ['id', 'item', 'cost']
 
 
 ReceiptFormSet = formset_factory(ReceiptForm, formset=BaseReceiptFormSet, extra=3)
